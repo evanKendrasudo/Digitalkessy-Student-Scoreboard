@@ -662,25 +662,31 @@ async function downloadFeedbackDocx() {
   const filename = `digitalkessy-feedback-${name.replace(/\s+/g, '-').toLowerCase()}.docx`;
   const blob = await Packer.toBlob(doc);
 
-  // Show helper message
-  document.getElementById('docx-dl-msg').style.display = 'block';
+  // Convert to base64 for mobile compatibility
+  const reader = new FileReader();
+  reader.onload = function() {
+    const base64 = reader.result;
+    const dlMsg = document.getElementById('docx-dl-msg');
+    const dlBtn = document.getElementById('docx-dl-btn');
 
-  // Mobile-compatible download
-  if (navigator.msSaveOrOpenBlob) {
-    // IE/Edge legacy
-    navigator.msSaveOrOpenBlob(blob, filename);
-  } else {
-    const url = URL.createObjectURL(blob);
+    // Try standard download first
     const a = document.createElement('a');
-    a.href = url;
+    a.href = base64;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 300);
-  }
+    document.body.removeChild(a);
+
+    // Show open-in-new-tab fallback for mobile
+    dlMsg.innerHTML = `
+      <a href="${base64}" download="${filename}" 
+         style="color:var(--gold-light);font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;text-decoration:underline;"
+         target="_blank">
+        📄 Tap here if file didn't download
+      </a>`;
+    dlMsg.style.display = 'block';
+  };
+  reader.readAsDataURL(blob);
 }
 
 // ── PNG UTILS (Scoreboard + Certificate) ──────────────────────
