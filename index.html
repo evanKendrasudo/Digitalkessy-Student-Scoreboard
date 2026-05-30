@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital Kessy Studio Tools</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root {
   --black: #0a0008;
@@ -26,7 +27,6 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .brand-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(11px,3vw,15px); letter-spacing: 0.2em; color: var(--purple-glow); text-transform: uppercase; }
 .brand-sub { font-size: 9px; letter-spacing: 0.3em; color: var(--muted); margin-top: 4px; }
 
-/* TABS */
 .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: #130020; border: 1px solid #3d1460; border-radius: 12px; padding: 5px; width: 100%; max-width: 520px; }
 .tab-btn { background: transparent; border: none; border-radius: 8px; color: var(--muted); cursor: pointer; flex: 1; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.1em; padding: 9px 2px; text-transform: uppercase; transition: all 0.2s; }
 .tab-btn.active { background: linear-gradient(135deg,#6b21a8,#9333ea); color: white; box-shadow: 0 2px 12px #9333ea40; }
@@ -34,7 +34,6 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .panel { display: none; width: 100%; max-width: 520px; }
 .panel.active { display: block; }
 
-/* EDITOR SHARED */
 .editor { background: linear-gradient(135deg,#130020,#1a0030); border: 1px solid #3d1460; border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 40px #6b21a820; }
 .etitle { font-size: 10px; letter-spacing: 0.3em; color: var(--purple-glow); text-transform: uppercase; margin: 18px 0 14px; display: flex; align-items: center; gap: 8px; }
 .etitle:first-child { margin-top: 0; }
@@ -75,6 +74,8 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .dlbar { display: flex; gap: 8px; margin-bottom: 14px; }
 .dlbtn { background: #130020; border: 1px solid #6b21a860; border-radius: 8px; color: var(--purple-glow); cursor: pointer; flex: 1; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.15em; padding: 10px; text-align: center; text-transform: uppercase; transition: all 0.2s; }
 .dlbtn:hover { background: #2a0040; border-color: #9333ea; }
+.dlbtn.docx-btn { background: linear-gradient(135deg,#1a0030,#2a0050); border-color: #9333ea; color: var(--gold-light); }
+.dlbtn.docx-btn:hover { background: linear-gradient(135deg,#2a0050,#3d0070); }
 
 /* SCOREBOARD */
 #scoreboard { background: linear-gradient(160deg,#0e0018 0%,#1a0030 40%,#0e0018 100%); border: 1px solid #3d1460; border-radius: 18px; overflow: hidden; padding: 36px 22px 32px; position: relative; box-shadow: 0 0 60px #6b21a830; }
@@ -184,7 +185,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     <div class="fg"><label>Round Label</label><input type="text" id="sub-label" value="Chapter Review Results"></div>
     <div class="fg">
       <label>Submission Type</label>
-      <select id="submission-type">
+      <select id="submission-type" onchange="toggleCustomType()">
         <option>Chapter Submission</option>
         <option>Assignment Submission</option>
         <option>Week 1 Challenge</option>
@@ -224,7 +225,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     <div class="fg"><label>Student Full Name</label><input type="text" id="cert-name" placeholder="e.g. Rita Onwuka"></div>
     <div class="fg">
       <label>Course</label>
-      <select id="cert-course">
+      <select id="cert-course" onchange="toggleCertCustomCourse()">
         <option>Ghostwriting Mastery</option>
         <option>Dark Romance Writing</option>
         <option>Platform Writing Bootcamp</option>
@@ -234,7 +235,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     <div class="fg" id="cert-custom-course-wrap" style="display:none"><label>Custom Course</label><input type="text" id="cert-custom-course"></div>
     <div class="fg">
       <label>Achievement</label>
-      <select id="cert-ach-sel">
+      <select id="cert-ach-sel" onchange="toggleCertCustomAch()">
         <option>First Platform Contract — GoodNovel</option>
         <option>First Platform Contract — Dreame</option>
         <option>First Platform Contract — LetterLux</option>
@@ -247,6 +248,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     <div class="fg"><label>Body Text</label><textarea id="cert-body-text">In recognition of exceptional dedication and the achievement of securing her first platform contract — proving that passion, consistency and craft open doors.</textarea></div>
     <div class="fg"><label>Phrase to Bold</label><input type="text" id="cert-bold-phrase" value="first platform contract"></div>
     <div class="fg"><label>Year</label><input type="text" id="cert-year" value="2026"></div>
+    <div class="fg"><label>Student Signature Label</label><input type="text" id="cert-student-label" value="Graduate"></div>
     <button class="gen-btn" onclick="generateCertificate()">Generate Certificate</button>
   </div>
   <div class="out" id="cert-out">
@@ -255,24 +257,19 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
       <button class="dlbtn" onclick="downloadImg('certificate','digitalkessy-certificate.png')">⬇ Download PNG</button>
     </div>
     <div id="certificate">
-      <div class="cc tl"></div><div class="cc tr"></div><div class="cc bl"></div><div class="cc br"></div>
-      <div class="ctbar">
-        <div class="ctline"></div><span class="ctdiam">♦</span>
-        <span class="cttext">Digital Kessy Ghostwriting Studio</span>
-        <span class="ctdiam">♦</span><div class="ctline r"></div>
-      </div>
-      <div style="text-align:center;margin-bottom:4px;color:#9333ea;font-size:9px;">♦</div>
-      <div class="ctitle">Certificate of Achievement</div>
-      <div class="ccourse" id="cert-course-display">GHOSTWRITING MASTERY</div>
+      <span class="cc tl"></span><span class="cc tr"></span><span class="cc bl"></span><span class="cc br"></span>
+      <div class="ctbar"><div class="ctline"></div><span class="ctdiam">♦</span><span class="cttext">Digital Kessy Ghostwriting Studio</span><span class="ctdiam">♦</span><div class="ctline r"></div></div>
+      <div class="ctitle" id="c-title">Certificate of Achievement</div>
+      <div class="ccourse" id="c-course">GHOSTWRITING MASTERY</div>
       <div class="cdiv"><span class="cdgem">♦</span></div>
       <div class="cpresented">Proudly Presented To</div>
-      <div class="cname" id="cert-name-display">Student Name</div>
-      <div class="cbody" id="cert-body-display">In recognition of exceptional dedication and the achievement of securing her <strong>first platform contract</strong> — proving that passion, consistency and craft open doors.</div>
-      <div class="cachbox"><span class="cstar">★</span><span class="cachtext" id="cert-ach-display">First Platform Contract — GoodNovel 2026</span><span class="cstar">★</span></div>
+      <div class="cname" id="c-name">Student Name</div>
+      <div class="cbody" id="c-body">In recognition of exceptional dedication and the achievement of securing her <strong>first platform contract</strong> — proving that passion, consistency and craft open doors.</div>
+      <div class="cachbox"><div class="cachtext" id="c-ach"><span class="cstar">★</span>First Platform Contract — GoodNovel 2026<span class="cstar">★</span></div></div>
       <div class="csigrow">
-        <div class="csig"><div class="csigname">Kendra</div><div class="csiglabel">Coach &amp; Founder<br>Digital Kessy</div></div>
-        <div class="cseal"><div class="csealtext">Digital<br>Kessy</div><div class="csealyr" id="cert-year-display">2026</div></div>
-        <div class="csig"><div class="csigname" id="cert-grad-name">Student Name</div><div class="csiglabel" id="cert-grad-course">Graduate<br>Ghostwriting Mastery</div></div>
+        <div class="csig"><div class="csigname">Kendra</div><div class="csiglabel">Coach & Founder<br>Digital Kessy</div></div>
+        <div class="cseal"><div class="csealtext">Digital<br>Kessy</div><div class="csealyr" id="c-seal-yr">2026</div></div>
+        <div class="csig"><div class="csigname" id="c-student-sig">Student Name</div><div class="csiglabel" id="c-student-label">Graduate<br>Ghostwriting Mastery</div></div>
       </div>
     </div>
   </div>
@@ -282,58 +279,57 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 <div class="panel" id="panel-feedback">
   <div class="editor">
     <div class="etitle">✦ Student Info</div>
-    <div class="fg"><label>Student Name</label><input type="text" id="fb-student" placeholder="e.g. Isabelle"></div>
-    <div class="fg"><label>Assessment Title</label><input type="text" id="fb-title" placeholder="e.g. Forbidden Romance Assessment"></div>
-    <div class="fg"><label>Score</label><input type="text" id="fb-score" placeholder="e.g. 7.8 / 10"></div>
-    <div class="fg"><label>Overall Verdict</label><textarea id="fb-verdict" placeholder="Two to three weeks in this course and you opened with THAT?..."></textarea></div>
+    <div class="fg"><label>Student Name</label><input type="text" id="fb-name" placeholder="e.g. Temi Adeyemi"></div>
+    <div class="fg"><label>Assessment Title</label><input type="text" id="fb-title" placeholder="e.g. Chapter 1 Submission"></div>
+    <div class="fg"><label>Score (optional)</label><input type="text" id="fb-score" placeholder="e.g. 74/100 or leave blank"></div>
+    <div class="fg"><label>Overall Verdict</label><textarea id="fb-verdict" placeholder="Your overall assessment of their submission..."></textarea></div>
 
     <div class="etitle">✦ What You Did Right ✓</div>
-    <div id="fb-right-list"></div>
-    <button class="add-btn" onclick="addPoint('right')">+ Add Point</button>
+    <div id="fb-rights-list"></div>
+    <button class="add-btn" onclick="addRight()">+ Add Point</button>
 
     <div class="etitle">✦ What Needs Work ✗</div>
-    <div id="fb-work-list"></div>
-    <button class="add-btn" onclick="addPoint('work')">+ Add Point</button>
+    <div id="fb-needs-list"></div>
+    <button class="add-btn" onclick="addNeed()">+ Add Point</button>
 
     <div class="etitle">✦ Action Items for the Rewrite</div>
-    <div id="fb-act-list"></div>
+    <div id="fb-actions-list"></div>
     <button class="add-btn" onclick="addAction()">+ Add Action Item</button>
 
     <div class="etitle">✦ Note from Your Coach</div>
-    <div class="fg"><textarea id="fb-note" placeholder="Isabelle — two to three weeks. That is all it took..."></textarea></div>
+    <div class="fg"><textarea id="fb-note" placeholder="Personal note to the student..." style="min-height:90px;"></textarea></div>
 
     <button class="gen-btn" onclick="generateFeedback()">✦ Generate Feedback Doc</button>
   </div>
 
   <div class="out" id="fb-out">
     <div class="dlbar">
-      <button class="dlbtn" onclick="copyImg('feedback-doc')">📋 Copy Image</button>
-      <button class="dlbtn" onclick="downloadImg('feedback-doc','digitalkessy-feedback.png')">⬇ Download PNG</button>
+      <button class="dlbtn docx-btn" onclick="downloadFeedbackDocx()">⬇ Download .docx</button>
     </div>
     <div id="feedback-doc">
       <div class="fb-hd">
-        <div class="fb-main-title">Assessment Feedback</div>
-        <div class="fb-meta" id="fb-doc-meta">Assessment — Student | Digital Kessy Ghostwriting Studio</div>
+        <div class="fb-main-title" id="fb-out-title">Assessment Feedback</div>
+        <div class="fb-meta" id="fb-out-meta">Assessment — Student | Digital Kessy Ghostwriting Studio</div>
       </div>
       <div class="fb-sec">
-        <div class="fb-sec-label red">Overall Verdict</div>
-        <div class="fb-verdict" id="fb-doc-verdict"></div>
+        <div class="fb-sec-label purple">Overall Verdict</div>
+        <div class="fb-verdict" id="fb-out-verdict"></div>
       </div>
-      <div class="fb-sec" id="fb-right-sec">
+      <div class="fb-sec">
         <div class="fb-sec-label green">What You Did Right ✓</div>
-        <div class="fb-pts" id="fb-doc-right"></div>
+        <div class="fb-pts" id="fb-out-rights"></div>
       </div>
-      <div class="fb-sec" id="fb-work-sec">
+      <div class="fb-sec">
         <div class="fb-sec-label red">What Needs Work ✗</div>
-        <div class="fb-pts" id="fb-doc-work"></div>
+        <div class="fb-pts" id="fb-out-needs"></div>
       </div>
-      <div class="fb-sec" id="fb-act-sec">
+      <div class="fb-sec">
         <div class="fb-sec-label gold">Your Action Items for the Rewrite</div>
-        <div class="fb-acts" id="fb-doc-acts"></div>
+        <div class="fb-acts" id="fb-out-actions"></div>
       </div>
-      <div class="fb-sec" id="fb-note-sec">
+      <div class="fb-sec">
         <div class="fb-sec-label purple">A Note from Your Coach</div>
-        <div class="fb-notebox"><div class="fb-notetext" id="fb-doc-note"></div></div>
+        <div class="fb-notebox"><div class="fb-notetext" id="fb-out-note"></div></div>
       </div>
       <div class="fb-ft">
         <div class="fb-ft-brand">Digital Kessy Ghostwriting Studio</div>
@@ -343,195 +339,359 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
   </div>
 </div>
 
+<!-- docx.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+
 <script>
-// TAB
-function switchTab(t) {
-  ['scoreboard','certificate','feedback'].forEach((n,i) => {
-    document.querySelectorAll('.tab-btn')[i].classList.toggle('active', n===t);
-  });
+// ── TAB SWITCHING ──────────────────────────────────────────────
+function switchTab(tab) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-'+t).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.target.classList.add('active');
 }
 
-// SCOREBOARD
-let students = [{name:'Rita',score:'9'},{name:'Deborah',score:'8.5'},{name:'Mrs Sparkles',score:'7.5'},{name:'Isabella',score:'7.5'}];
-document.getElementById('submission-type').addEventListener('change', function() {
-  document.getElementById('custom-type-wrap').style.display = this.value==='Custom'?'flex':'none';
-});
-function getSubType() {
-  const s = document.getElementById('submission-type');
-  return s.value==='Custom' ? (document.getElementById('custom-type').value||'Submission') : s.value;
+// ── SCOREBOARD ─────────────────────────────────────────────────
+let students = [];
+function addStudent() {
+  const id = Date.now();
+  students.push({ id });
+  renderStudents();
+}
+function removeStudent(id) {
+  students = students.filter(s => s.id !== id);
+  renderStudents();
 }
 function renderStudents() {
-  const list = document.getElementById('students-list'); list.innerHTML='';
-  students.forEach((s,i) => {
-    const r = document.createElement('div'); r.className='srow';
-    r.innerHTML = `<input type="text" placeholder="Name" value="${esc(s.name)}" oninput="students[${i}].name=this.value">
-      <input type="text" placeholder="Score" value="${esc(s.score)}" style="text-align:center" oninput="students[${i}].score=this.value">
-      <button class="xbtn" onclick="removeStudent(${i})">×</button>`;
-    list.appendChild(r);
-  });
+  const el = document.getElementById('students-list');
+  el.innerHTML = students.map((s, i) => `
+    <div class="srow">
+      <input type="text" placeholder="Student name" id="sn-${s.id}" value="${s.name||''}">
+      <input type="number" placeholder="Score" id="ss-${s.id}" min="0" max="100" value="${s.score||''}">
+      <button class="xbtn" onclick="removeStudent(${s.id})">×</button>
+    </div>`).join('');
 }
-function addStudent() { students.push({name:'',score:''}); renderStudents(); }
-function removeStudent(i) { if(students.length>1){students.splice(i,1);renderStudents();} }
+function toggleCustomType() {
+  const v = document.getElementById('submission-type').value;
+  document.getElementById('custom-type-wrap').style.display = v === 'Custom' ? 'block' : 'none';
+}
 function generateScoreboard() {
-  const sorted = [...students].filter(s=>s.name.trim()).map(s=>({...s,num:parseFloat(s.score)||0})).sort((a,b)=>b.num-a.num);
-  document.getElementById('sb-sub-label').textContent = document.getElementById('sub-label').value||'Results';
-  const subType = getSubType();
-  const entries = document.getElementById('sb-entries'); entries.innerHTML='';
-  sorted.forEach((s,i) => {
-    const d = document.createElement('div'); d.className='sb-row'+(i===0?' top':'');
-    d.innerHTML = `${i===0?'<div class="top-badge">★ Top Score</div>':''}
-      <div class="sb-rank">#${i+1}</div>
-      <div><div class="sb-name">${s.name}</div><div class="sb-type">${subType}</div></div>
-      <div class="sb-score">${s.score}<sup>/10</sup></div>
-      <div class="sb-bar" style="width:${Math.min(100,(s.num/10)*100)}%"></div>`;
-    entries.appendChild(d);
-  });
-  show('sb-out');
-}
+  const label = document.getElementById('sub-label').value || 'Chapter Review Results';
+  let type = document.getElementById('submission-type').value;
+  if (type === 'Custom') type = document.getElementById('custom-type').value || 'Submission';
 
-// CERTIFICATE
-document.getElementById('cert-course').addEventListener('change', function() {
-  document.getElementById('cert-custom-course-wrap').style.display = this.value==='Custom'?'flex':'none';
-});
-document.getElementById('cert-ach-sel').addEventListener('change', function() {
-  document.getElementById('cert-custom-ach-wrap').style.display = this.value==='Custom'?'flex':'none';
-});
-function generateCertificate() {
-  const name = document.getElementById('cert-name').value.trim()||'Student Name';
-  const cs = document.getElementById('cert-course');
-  const course = cs.value==='Custom' ? (document.getElementById('cert-custom-course').value||'Ghostwriting Mastery') : cs.value;
-  const as = document.getElementById('cert-ach-sel');
-  const ach = as.value==='Custom' ? (document.getElementById('cert-custom-ach').value||'Achievement') : as.value;
-  const year = document.getElementById('cert-year').value||'2026';
-  let body = document.getElementById('cert-body-text').value;
-  const bold = document.getElementById('cert-bold-phrase').value.trim();
-  if(bold) body = body.replace(new RegExp(bold.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),`<strong>${bold}</strong>`);
-  document.getElementById('cert-name-display').textContent = name;
-  document.getElementById('cert-grad-name').textContent = name;
-  document.getElementById('cert-course-display').textContent = course.toUpperCase();
-  document.getElementById('cert-grad-course').innerHTML = `Graduate<br>${course}`;
-  document.getElementById('cert-ach-display').textContent = `${ach} ${year}`;
-  document.getElementById('cert-year-display').textContent = year;
-  document.getElementById('cert-body-display').innerHTML = body;
-  show('cert-out');
-}
+  const data = students.map(s => ({
+    name: document.getElementById('sn-' + s.id)?.value || 'Student',
+    score: parseFloat(document.getElementById('ss-' + s.id)?.value) || 0
+  })).filter(s => s.name.trim());
 
-// FEEDBACK
-let fbRight = [], fbWork = [], fbActs = [];
+  data.sort((a, b) => b.score - a.score);
 
-function addPoint(type) {
-  (type==='right' ? fbRight : fbWork).push({title:'',body:''});
-  renderPoints(type);
-}
-function removePoint(type, i) {
-  (type==='right' ? fbRight : fbWork).splice(i,1);
-  renderPoints(type);
-}
-function renderPoints(type) {
-  const arr = type==='right' ? fbRight : fbWork;
-  const list = document.getElementById('fb-'+type+'-list');
-  list.innerHTML='';
-  arr.forEach((p,i) => {
-    const card = document.createElement('div'); card.className='pcard';
-    card.innerHTML = `<div class="pcard-hd">
-        <span class="pnum">Point ${i+1}</span>
-        <input type="text" placeholder="Point title..." value="${esc(p.title)}" oninput="fb${type==='right'?'Right':'Work'}[${i}].title=this.value">
-        <button class="delbtn" onclick="removePoint('${type}',${i})">×</button>
+  document.getElementById('sb-sub-label').textContent = label;
+  const list = document.getElementById('sb-entries');
+  list.innerHTML = data.map((s, i) => `
+    <div class="sb-row ${i === 0 ? 'top' : ''}">
+      ${i === 0 ? '<div class="top-badge">Top Student</div>' : ''}
+      <div class="sb-rank">#${i + 1}</div>
+      <div>
+        <div class="sb-name">${s.name}</div>
+        <div class="sb-type">${type}</div>
       </div>
-      <textarea placeholder="Explain this point..." oninput="fb${type==='right'?'Right':'Work'}[${i}].body=this.value">${esc(p.body)}</textarea>`;
-    list.appendChild(card);
-  });
+      <div class="sb-score">${s.score}<sup>/100</sup></div>
+      <div class="sb-bar"></div>
+    </div>`).join('');
+
+  document.getElementById('sb-out').style.display = 'block';
 }
 
-function addAction() { fbActs.push(''); renderActions(); }
-function removeAction(i) { fbActs.splice(i,1); renderActions(); }
-function renderActions() {
-  const list = document.getElementById('fb-act-list'); list.innerHTML='';
-  fbActs.forEach((a,i) => {
-    const card = document.createElement('div'); card.className='acard';
-    card.innerHTML = `<input type="text" placeholder="e.g. Cut the mirror description to one detail" value="${esc(a)}" oninput="fbActs[${i}]=this.value">
-      <button class="delbtn" onclick="removeAction(${i})">×</button>`;
-    list.appendChild(card);
-  });
+// ── CERTIFICATE ────────────────────────────────────────────────
+function toggleCertCustomCourse() {
+  const v = document.getElementById('cert-course').value;
+  document.getElementById('cert-custom-course-wrap').style.display = v === 'Custom' ? 'block' : 'none';
+}
+function toggleCertCustomAch() {
+  const v = document.getElementById('cert-ach-sel').value;
+  document.getElementById('cert-custom-ach-wrap').style.display = v === 'Custom' ? 'block' : 'none';
+}
+function generateCertificate() {
+  const name = document.getElementById('cert-name').value || 'Student Name';
+  let course = document.getElementById('cert-course').value;
+  if (course === 'Custom') course = document.getElementById('cert-custom-course').value || 'Course';
+  let ach = document.getElementById('cert-ach-sel').value;
+  if (ach === 'Custom') ach = document.getElementById('cert-custom-ach').value || 'Achievement';
+  const bodyRaw = document.getElementById('cert-body-text').value;
+  const boldPhrase = document.getElementById('cert-bold-phrase').value;
+  const year = document.getElementById('cert-year').value || '2026';
+  const stuLabel = document.getElementById('cert-student-label').value || 'Graduate';
+
+  document.getElementById('c-course').textContent = course.toUpperCase();
+  document.getElementById('c-name').textContent = name;
+  document.getElementById('c-ach').innerHTML = `<span class="cstar">★</span>${ach} ${year}<span class="cstar">★</span>`;
+  document.getElementById('c-seal-yr').textContent = year;
+  document.getElementById('c-student-sig').textContent = name;
+  document.getElementById('c-student-label').innerHTML = `${stuLabel}<br>${course}`;
+
+  let bodyHTML = bodyRaw;
+  if (boldPhrase) bodyHTML = bodyRaw.replace(new RegExp(boldPhrase, 'gi'), m => `<strong>${m}</strong>`);
+  document.getElementById('c-body').innerHTML = bodyHTML;
+
+  document.getElementById('cert-out').style.display = 'block';
+}
+
+// ── FEEDBACK ───────────────────────────────────────────────────
+let fbRights = [], fbNeeds = [], fbActions = [];
+
+function addRight() {
+  const id = Date.now();
+  fbRights.push({ id });
+  renderFbList('rights');
+}
+function addNeed() {
+  const id = Date.now();
+  fbNeeds.push({ id });
+  renderFbList('needs');
+}
+function addAction() {
+  const id = Date.now();
+  fbActions.push({ id });
+  renderFbList('actions');
+}
+
+function renderFbList(type) {
+  const arr = type === 'rights' ? fbRights : type === 'needs' ? fbNeeds : fbActions;
+  const elId = type === 'rights' ? 'fb-rights-list' : type === 'needs' ? 'fb-needs-list' : 'fb-actions-list';
+  const el = document.getElementById(elId);
+
+  if (type === 'actions') {
+    el.innerHTML = arr.map((item, i) => `
+      <div class="acard">
+        <input type="text" placeholder="Action item ${i+1}..." id="fa-${item.id}">
+        <button class="delbtn" onclick="removeFbItem('actions',${item.id})">×</button>
+      </div>`).join('');
+  } else {
+    el.innerHTML = arr.map((item, i) => `
+      <div class="pcard">
+        <div class="pcard-hd">
+          <span class="pnum">0${i+1}</span>
+          <input type="text" placeholder="Point title..." id="ft-${item.id}">
+          <button class="delbtn" onclick="removeFbItem('${type}',${item.id})">×</button>
+        </div>
+        <textarea placeholder="Explain this point..." id="fb-${item.id}"></textarea>
+      </div>`).join('');
+  }
+}
+
+function removeFbItem(type, id) {
+  if (type === 'rights') fbRights = fbRights.filter(x => x.id !== id);
+  else if (type === 'needs') fbNeeds = fbNeeds.filter(x => x.id !== id);
+  else fbActions = fbActions.filter(x => x.id !== id);
+  renderFbList(type);
 }
 
 function generateFeedback() {
-  const student = document.getElementById('fb-student').value.trim()||'Student';
-  const title   = document.getElementById('fb-title').value.trim()||'Assessment';
-  const score   = document.getElementById('fb-score').value.trim();
-  const verdict = document.getElementById('fb-verdict').value.trim();
-  const note    = document.getElementById('fb-note').value.trim();
+  const name = document.getElementById('fb-name').value || 'Student';
+  const title = document.getElementById('fb-title').value || 'Assessment';
+  const score = document.getElementById('fb-score').value;
+  const verdict = document.getElementById('fb-verdict').value;
+  const note = document.getElementById('fb-note').value;
 
-  document.getElementById('fb-doc-meta').textContent = `${title} — ${student} | Digital Kessy Ghostwriting Studio`;
-  document.getElementById('fb-doc-verdict').innerHTML = `<strong>${score ? 'Score: '+score+' — ' : ''}${student}.</strong> ${verdict}`;
+  document.getElementById('fb-out-title').textContent = title + ' Feedback';
+  document.getElementById('fb-out-meta').textContent =
+    `${title} — ${name}${score ? ' | Score: ' + score : ''} | Digital Kessy Ghostwriting Studio`;
+  document.getElementById('fb-out-verdict').textContent = verdict;
+  document.getElementById('fb-out-note').textContent = note;
 
-  const rightEl = document.getElementById('fb-doc-right'); rightEl.innerHTML='';
-  const fr = fbRight.filter(p=>p.title.trim());
-  fr.forEach(p => {
-    const d = document.createElement('div');
-    d.innerHTML = `<div class="fb-pt-title">${p.title}</div>${p.body?`<div class="fb-pt-body">${p.body}</div>`:''}`;
-    rightEl.appendChild(d);
+  // Rights
+  document.getElementById('fb-out-rights').innerHTML = fbRights.map(item => {
+    const t = document.getElementById('ft-' + item.id)?.value || '';
+    const b = document.getElementById('fb-' + item.id)?.value || '';
+    return `<div><div class="fb-pt-title">${t}</div><div class="fb-pt-body">${b}</div></div>`;
+  }).join('');
+
+  // Needs
+  document.getElementById('fb-out-needs').innerHTML = fbNeeds.map(item => {
+    const t = document.getElementById('ft-' + item.id)?.value || '';
+    const b = document.getElementById('fb-' + item.id)?.value || '';
+    return `<div><div class="fb-pt-title">${t}</div><div class="fb-pt-body">${b}</div></div>`;
+  }).join('');
+
+  // Actions
+  document.getElementById('fb-out-actions').innerHTML = fbActions.map(item => {
+    const a = document.getElementById('fa-' + item.id)?.value || '';
+    return `<div class="fb-act">${a}</div>`;
+  }).join('');
+
+  document.getElementById('fb-out').style.display = 'block';
+}
+
+// ── DOCX DOWNLOAD (Feedback only) ─────────────────────────────
+async function downloadFeedbackDocx() {
+  const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, ShadingType } = docx;
+
+  const name    = document.getElementById('fb-name').value || 'Student';
+  const title   = document.getElementById('fb-title').value || 'Assessment';
+  const score   = document.getElementById('fb-score').value;
+  const verdict = document.getElementById('fb-verdict').value;
+  const note    = document.getElementById('fb-note').value;
+
+  const purple = '6B21A8';
+  const gold   = 'C9A84C';
+  const dark   = '1A0030';
+  const muted  = 'A89BB5';
+  const red    = 'E05C5C';
+  const green  = '6EE7A0';
+
+  const divider = new Paragraph({
+    border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: purple } },
+    spacing: { after: 200 }
   });
-  document.getElementById('fb-right-sec').style.display = fr.length?'block':'none';
 
-  const workEl = document.getElementById('fb-doc-work'); workEl.innerHTML='';
-  const fw = fbWork.filter(p=>p.title.trim());
-  fw.forEach(p => {
-    const d = document.createElement('div');
-    d.innerHTML = `<div class="fb-pt-title">${p.title}</div>${p.body?`<div class="fb-pt-body">${p.body}</div>`:''}`;
-    workEl.appendChild(d);
+  const sectionHeading = (text, color) => new Paragraph({
+    children: [new TextRun({ text: text.toUpperCase(), bold: true, color, size: 22, font: 'Cinzel' })],
+    spacing: { before: 320, after: 120 }
   });
-  document.getElementById('fb-work-sec').style.display = fw.length?'block':'none';
 
-  const actEl = document.getElementById('fb-doc-acts'); actEl.innerHTML='';
-  const fa = fbActs.filter(a=>a.trim());
-  fa.forEach(a => {
-    const d = document.createElement('div'); d.className='fb-act'; d.textContent=a;
-    actEl.appendChild(d);
+  const bodyText = (text, color = 'F5F0FF') => new Paragraph({
+    children: [new TextRun({ text, color, size: 22, font: 'Palatino Linotype' })],
+    spacing: { after: 80 }
   });
-  document.getElementById('fb-act-sec').style.display = fa.length?'block':'none';
 
-  document.getElementById('fb-doc-note').textContent = note;
-  document.getElementById('fb-note-sec').style.display = note?'block':'none';
+  const pointBlock = (titleText, bodyTxt) => [
+    new Paragraph({
+      children: [new TextRun({ text: titleText, bold: true, color: 'F5F0FF', size: 22, font: 'Palatino Linotype' })],
+      spacing: { before: 160, after: 60 }
+    }),
+    new Paragraph({
+      children: [new TextRun({ text: bodyTxt, color: muted, size: 21, font: 'Palatino Linotype' })],
+      indent: { left: 360 },
+      border: { left: { style: BorderStyle.SINGLE, size: 12, color: purple } },
+      spacing: { after: 100 }
+    })
+  ];
 
-  show('fb-out');
+  const actionItem = (text) => new Paragraph({
+    children: [new TextRun({ text: '• ' + text, color: 'F5F0FF', size: 22, font: 'Palatino Linotype' })],
+    spacing: { after: 80 }
+  });
+
+  // Collect data
+  const rightsData = fbRights.map(item => ({
+    title: document.getElementById('ft-' + item.id)?.value || '',
+    body: document.getElementById('fb-' + item.id)?.value || ''
+  }));
+  const needsData = fbNeeds.map(item => ({
+    title: document.getElementById('ft-' + item.id)?.value || '',
+    body: document.getElementById('fb-' + item.id)?.value || ''
+  }));
+  const actionsData = fbActions.map(item =>
+    document.getElementById('fa-' + item.id)?.value || ''
+  );
+
+  const children = [
+    // Header
+    new Paragraph({
+      children: [new TextRun({ text: title + ' Feedback', bold: true, size: 52, color: 'F5F0FF', font: 'Cinzel' })],
+      spacing: { after: 120 }
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({ text: `${title} — ${name}`, italics: true, color: muted, size: 22, font: 'Palatino Linotype' }),
+        ...(score ? [new TextRun({ text: `  |  Score: ${score}`, color: gold, size: 22, font: 'Palatino Linotype' })] : []),
+        new TextRun({ text: '  |  Digital Kessy Ghostwriting Studio', color: muted, size: 20, font: 'Palatino Linotype' })
+      ],
+      spacing: { after: 200 }
+    }),
+    divider,
+
+    // Verdict
+    sectionHeading('✦ Overall Verdict', '9333EA'),
+    bodyText(verdict),
+
+    // Rights
+    sectionHeading('✦ What You Did Right ✓', green),
+    ...rightsData.flatMap(p => pointBlock(p.title, p.body)),
+
+    // Needs
+    sectionHeading('✦ What Needs Work ✗', red),
+    ...needsData.flatMap(p => pointBlock(p.title, p.body)),
+
+    // Actions
+    sectionHeading('✦ Action Items for the Rewrite', gold),
+    ...actionsData.map(a => actionItem(a)),
+
+    // Note
+    sectionHeading('✦ A Note from Your Coach', '9333EA'),
+    new Paragraph({
+      children: [new TextRun({ text: note, italics: true, color: muted, size: 22, font: 'Palatino Linotype' })],
+      border: {
+        top: { style: BorderStyle.SINGLE, size: 4, color: purple },
+        bottom: { style: BorderStyle.SINGLE, size: 4, color: purple },
+        left: { style: BorderStyle.SINGLE, size: 4, color: purple },
+        right: { style: BorderStyle.SINGLE, size: 4, color: purple }
+      },
+      spacing: { before: 100, after: 100 }
+    }),
+
+    // Footer
+    new Paragraph({ spacing: { before: 400 } }),
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Digital Kessy Ghostwriting Studio', bold: true, color: '9333EA', size: 18, font: 'Cinzel' }),
+        new TextRun({ text: '     Coached by Kendra 🖤', italics: true, color: muted, size: 18, font: 'Palatino Linotype' })
+      ],
+      border: { top: { style: BorderStyle.SINGLE, size: 4, color: purple } },
+      spacing: { before: 160 }
+    })
+  ];
+
+  const doc = new Document({
+    background: { color: '0D0016' },
+    sections: [{
+      properties: {
+        page: {
+          margin: { top: 1000, bottom: 1000, left: 1100, right: 1100 }
+        }
+      },
+      children
+    }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `digitalkessy-feedback-${name.replace(/\s+/g, '-').toLowerCase()}.docx`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
-// HELPERS
-function show(id) {
-  const w = document.getElementById(id); w.style.display='block';
-  w.scrollIntoView({behavior:'smooth',block:'start'});
+// ── PNG UTILS (Scoreboard + Certificate) ──────────────────────
+function downloadImg(id, filename) {
+  const el = document.getElementById(id);
+  html2canvas(el, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
 }
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// DOWNLOAD
-async function loadH2C() {
-  if(!window.html2canvas) await new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
-}
-async function getCanvas(id) {
-  await loadH2C();
-  return html2canvas(document.getElementById(id),{backgroundColor:'#0a0008',scale:3,useCORS:true,logging:false});
-}
-async function downloadImg(id,filename) {
-  const btn=event.target; btn.textContent='⏳ Rendering...';
-  try { const c=await getCanvas(id); const a=document.createElement('a'); a.download=filename; a.href=c.toDataURL('image/png'); a.click(); } catch(e){alert('Failed: '+e.message);}
-  btn.textContent='⬇ Download PNG';
-}
-async function copyImg(id) {
-  const btn=event.target; btn.textContent='⏳ Rendering...';
-  try { const c=await getCanvas(id); c.toBlob(async b=>{ await navigator.clipboard.write([new ClipboardItem({'image/png':b})]); btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent='📋 Copy Image',2000); }); }
-  catch(e){ alert('Copy failed — use Download instead.'); btn.textContent='📋 Copy Image'; }
+function copyImg(id) {
+  const el = document.getElementById(id);
+  html2canvas(el, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
+    canvas.toBlob(blob => {
+      navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
+        alert('Image copied to clipboard!');
+      }).catch(() => alert('Copy failed. Try downloading instead.'));
+    });
+  });
 }
 
-// INIT
-renderStudents();
-addPoint('right'); addPoint('right');
-addPoint('work'); addPoint('work');
-addAction(); addAction();
+// ── INIT ──────────────────────────────────────────────────────
+addStudent();
+addStudent();
+addRight();
+addNeed();
+addAction();
 </script>
 </body>
 </html>
