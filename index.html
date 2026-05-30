@@ -304,7 +304,10 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 
   <div class="out" id="fb-out">
     <div class="dlbar">
-      <button class="dlbtn docx-btn" onclick="downloadFeedbackDocx()">⬇ Download .docx</button>
+      <button class="dlbtn docx-btn" id="docx-dl-btn" onclick="downloadFeedbackDocx()">⬇ Download .docx</button>
+      <div id="docx-dl-msg" style="display:none;font-size:10px;color:#c084fc;letter-spacing:0.1em;text-align:center;margin-top:8px;font-family:'Cinzel',serif;">
+        If download didn't start, check your Downloads folder or try in Chrome.
+      </div>
     </div>
     <div id="feedback-doc">
       <div class="fb-hd">
@@ -656,13 +659,28 @@ async function downloadFeedbackDocx() {
     }]
   });
 
+  const filename = `digitalkessy-feedback-${name.replace(/\s+/g, '-').toLowerCase()}.docx`;
   const blob = await Packer.toBlob(doc);
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `digitalkessy-feedback-${name.replace(/\s+/g, '-').toLowerCase()}.docx`;
-  a.click();
-  URL.revokeObjectURL(url);
+
+  // Show helper message
+  document.getElementById('docx-dl-msg').style.display = 'block';
+
+  // Mobile-compatible download
+  if (navigator.msSaveOrOpenBlob) {
+    // IE/Edge legacy
+    navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 300);
+  }
 }
 
 // ── PNG UTILS (Scoreboard + Certificate) ──────────────────────
