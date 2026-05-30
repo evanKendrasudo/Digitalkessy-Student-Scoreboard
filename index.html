@@ -22,18 +22,18 @@
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--black); font-family: 'Cinzel', serif; color: var(--white); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 12px 60px; overflow-x: hidden; }
-
+ 
 .brand-header { text-align: center; margin-bottom: 20px; }
 .brand-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(11px,3vw,15px); letter-spacing: 0.2em; color: var(--purple-glow); text-transform: uppercase; }
 .brand-sub { font-size: 9px; letter-spacing: 0.3em; color: var(--muted); margin-top: 4px; }
-
+ 
 .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: #130020; border: 1px solid #3d1460; border-radius: 12px; padding: 5px; width: 100%; max-width: 520px; }
 .tab-btn { background: transparent; border: none; border-radius: 8px; color: var(--muted); cursor: pointer; flex: 1; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.1em; padding: 9px 2px; text-transform: uppercase; transition: all 0.2s; }
 .tab-btn.active { background: linear-gradient(135deg,#6b21a8,#9333ea); color: white; box-shadow: 0 2px 12px #9333ea40; }
-
+ 
 .panel { display: none; width: 100%; max-width: 520px; }
 .panel.active { display: block; }
-
+ 
 .editor { background: linear-gradient(135deg,#130020,#1a0030); border: 1px solid #3d1460; border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 40px #6b21a820; }
 .etitle { font-size: 10px; letter-spacing: 0.3em; color: var(--purple-glow); text-transform: uppercase; margin: 18px 0 14px; display: flex; align-items: center; gap: 8px; }
 .etitle:first-child { margin-top: 0; }
@@ -44,13 +44,13 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .fg textarea { font-family: 'Cormorant Garamond', serif; font-size: 14px; resize: vertical; min-height: 70px; line-height: 1.5; }
 .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--purple-light); }
 .fg select option { background: #130020; }
-
+ 
 .srow { display: grid; grid-template-columns: 1fr 72px 34px; gap: 6px; align-items: center; margin-bottom: 8px; }
 .srow input { background: #0d0018; border: 1px solid #3d1460; border-radius: 8px; color: var(--white); font-family: 'Cinzel', serif; font-size: 12px; padding: 8px 10px; outline: none; width: 100%; }
 .srow input:focus { border-color: var(--purple-light); }
 .xbtn { background: #2a0040; border: 1px solid #6b21a850; border-radius: 8px; color: #c084fc80; cursor: pointer; font-size: 18px; height: 34px; width: 34px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
 .xbtn:hover { background: #3d0060; color: #c084fc; }
-
+ 
 .pcard { background: #0d0018; border: 1px solid #3d1460; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
 .pcard-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .pnum { font-size: 9px; letter-spacing: 0.2em; color: var(--purple-glow); flex-shrink: 0; }
@@ -60,23 +60,23 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .pcard textarea:focus { border-color: var(--purple-light); }
 .delbtn { background: transparent; border: none; color: #c084fc40; cursor: pointer; font-size: 18px; flex-shrink: 0; padding: 0 2px; transition: color 0.2s; }
 .delbtn:hover { color: #c084fc; }
-
+ 
 .acard { background: #0d0018; border: 1px solid #3d1460; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 .acard input { background: #130020; border: 1px solid #3d1460; border-radius: 6px; color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 13px; padding: 7px 10px; outline: none; flex: 1; }
 .acard input:focus { border-color: var(--purple-light); }
-
+ 
 .add-btn { background: transparent; border: 1px dashed #6b21a870; border-radius: 8px; color: var(--purple-glow); cursor: pointer; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.15em; padding: 9px; text-transform: uppercase; width: 100%; transition: all 0.2s; }
 .add-btn:hover { background: #2a004030; border-color: #9333ea; }
 .gen-btn { background: linear-gradient(135deg,#6b21a8,#9333ea); border: none; border-radius: 10px; color: white; cursor: pointer; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.25em; margin-top: 18px; padding: 13px; text-transform: uppercase; width: 100%; transition: all 0.25s; box-shadow: 0 4px 20px #9333ea40; }
 .gen-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 28px #9333ea60; }
-
+ 
 .out { display: none; }
 .dlbar { display: flex; gap: 8px; margin-bottom: 14px; }
 .dlbtn { background: #130020; border: 1px solid #6b21a860; border-radius: 8px; color: var(--purple-glow); cursor: pointer; flex: 1; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.15em; padding: 10px; text-align: center; text-transform: uppercase; transition: all 0.2s; }
 .dlbtn:hover { background: #2a0040; border-color: #9333ea; }
 .dlbtn.docx-btn { background: linear-gradient(135deg,#1a0030,#2a0050); border-color: #9333ea; color: var(--gold-light); }
 .dlbtn.docx-btn:hover { background: linear-gradient(135deg,#2a0050,#3d0070); }
-
+ 
 /* SCOREBOARD */
 #scoreboard { background: linear-gradient(160deg,#0e0018 0%,#1a0030 40%,#0e0018 100%); border: 1px solid #3d1460; border-radius: 18px; overflow: hidden; padding: 36px 22px 32px; position: relative; box-shadow: 0 0 60px #6b21a830; }
 #scoreboard::before { content:''; position:absolute; top:-60px; left:50%; transform:translateX(-50%); width:280px; height:180px; background:radial-gradient(ellipse,#6b21a840 0%,transparent 70%); pointer-events:none; }
@@ -104,7 +104,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .sb-coached { font-size:8px; letter-spacing:0.28em; color:var(--muted); text-transform:uppercase; margin-bottom:5px; }
 .sb-brand { font-family:'Cormorant Garamond',serif; font-size:clamp(15px,4vw,20px); font-style:italic; color:var(--purple-glow); }
 .sb-brand span { color:var(--purple-light); margin-left:5px; }
-
+ 
 /* CERTIFICATE */
 #certificate { background:linear-gradient(160deg,#0e0018 0%,#180028 50%,#0e0018 100%); border-radius:14px; padding:24px 16px; position:relative; overflow:hidden; box-shadow:0 0 60px #6b21a830; width:100%; word-break:break-word; }
 #certificate::before { content:''; position:absolute; inset:8px; border:1px solid #6b21a850; border-radius:8px; pointer-events:none; }
@@ -139,7 +139,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 .cseal { display:flex; flex-direction:column; align-items:center; justify-content:center; width:62px; height:62px; border:2px solid #6b21a8; border-radius:50%; background:radial-gradient(ellipse,#2a0040,#0e0018); box-shadow:0 0 16px #6b21a840; flex-shrink:0; }
 .csealtext { font-size:6px; letter-spacing:0.12em; color:var(--purple-glow); text-transform:uppercase; text-align:center; line-height:1.4; }
 .csealyr { font-family:'Cormorant Garamond',serif; font-size:14px; color:var(--gold-light); font-weight:600; }
-
+ 
 /* FEEDBACK DOC */
 #feedback-doc { background:#0d0016; border:1px solid #2a1040; border-radius:14px; padding:32px 24px; font-family:'Cormorant Garamond',serif; color:var(--white); line-height:1.7; }
 .fb-hd { margin-bottom:26px; padding-bottom:16px; border-bottom:2px solid #3d1460; }
@@ -166,18 +166,18 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
 </style>
 </head>
 <body>
-
+ 
 <div class="brand-header">
   <div class="brand-title">Digital Kessy Ghostwriting Studio</div>
   <div class="brand-sub">Student Graphics Generator</div>
 </div>
-
+ 
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('scoreboard')">📊 Board</button>
   <button class="tab-btn" onclick="switchTab('certificate')">🏆 Certificate</button>
   <button class="tab-btn" onclick="switchTab('feedback')">📝 Feedback</button>
 </div>
-
+ 
 <!-- ══════ SCOREBOARD ══════ -->
 <div class="panel active" id="panel-scoreboard">
   <div class="editor">
@@ -217,7 +217,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     </div>
   </div>
 </div>
-
+ 
 <!-- ══════ CERTIFICATE ══════ -->
 <div class="panel" id="panel-certificate">
   <div class="editor">
@@ -274,7 +274,7 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     </div>
   </div>
 </div>
-
+ 
 <!-- ══════ FEEDBACK ══════ -->
 <div class="panel" id="panel-feedback">
   <div class="editor">
@@ -283,31 +283,29 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     <div class="fg"><label>Assessment Title</label><input type="text" id="fb-title" placeholder="e.g. Chapter 1 Submission"></div>
     <div class="fg"><label>Score (optional)</label><input type="text" id="fb-score" placeholder="e.g. 74/100 or leave blank"></div>
     <div class="fg"><label>Overall Verdict</label><textarea id="fb-verdict" placeholder="Your overall assessment of their submission..."></textarea></div>
-
+ 
     <div class="etitle">✦ What You Did Right ✓</div>
     <div id="fb-rights-list"></div>
     <button class="add-btn" onclick="addRight()">+ Add Point</button>
-
+ 
     <div class="etitle">✦ What Needs Work ✗</div>
     <div id="fb-needs-list"></div>
     <button class="add-btn" onclick="addNeed()">+ Add Point</button>
-
+ 
     <div class="etitle">✦ Action Items for the Rewrite</div>
     <div id="fb-actions-list"></div>
     <button class="add-btn" onclick="addAction()">+ Add Action Item</button>
-
+ 
     <div class="etitle">✦ Note from Your Coach</div>
     <div class="fg"><textarea id="fb-note" placeholder="Personal note to the student..." style="min-height:90px;"></textarea></div>
-
+ 
     <button class="gen-btn" onclick="generateFeedback()">✦ Generate Feedback Doc</button>
   </div>
-
+ 
   <div class="out" id="fb-out">
     <div class="dlbar">
-      <button class="dlbtn docx-btn" id="docx-dl-btn" onclick="downloadFeedbackDocx()">⬇ Download .docx</button>
-      <div id="docx-dl-msg" style="display:none;font-size:10px;color:#c084fc;letter-spacing:0.1em;text-align:center;margin-top:8px;font-family:'Cinzel',serif;">
-        If download didn't start, check your Downloads folder or try in Chrome.
-      </div>
+      <button class="dlbtn" onclick="copyImg('feedback-doc')">📋 Copy Image</button>
+      <button class="dlbtn" onclick="downloadImg('feedback-doc','digitalkessy-feedback.png')">⬇ Download PNG</button>
     </div>
     <div id="feedback-doc">
       <div class="fb-hd">
@@ -341,10 +339,10 @@ body { background: var(--black); font-family: 'Cinzel', serif; color: var(--whit
     </div>
   </div>
 </div>
-
+ 
 <!-- docx.js library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
-
+ 
 <script>
 // ── TAB SWITCHING ──────────────────────────────────────────────
 function switchTab(tab) {
@@ -353,7 +351,7 @@ function switchTab(tab) {
   document.getElementById('panel-' + tab).classList.add('active');
   event.target.classList.add('active');
 }
-
+ 
 // ── SCOREBOARD ─────────────────────────────────────────────────
 let students = [];
 function addStudent() {
@@ -382,14 +380,14 @@ function generateScoreboard() {
   const label = document.getElementById('sub-label').value || 'Chapter Review Results';
   let type = document.getElementById('submission-type').value;
   if (type === 'Custom') type = document.getElementById('custom-type').value || 'Submission';
-
+ 
   const data = students.map(s => ({
     name: document.getElementById('sn-' + s.id)?.value || 'Student',
     score: parseFloat(document.getElementById('ss-' + s.id)?.value) || 0
   })).filter(s => s.name.trim());
-
+ 
   data.sort((a, b) => b.score - a.score);
-
+ 
   document.getElementById('sb-sub-label').textContent = label;
   const list = document.getElementById('sb-entries');
   list.innerHTML = data.map((s, i) => `
@@ -403,10 +401,10 @@ function generateScoreboard() {
       <div class="sb-score">${s.score}<sup>/100</sup></div>
       <div class="sb-bar"></div>
     </div>`).join('');
-
+ 
   document.getElementById('sb-out').style.display = 'block';
 }
-
+ 
 // ── CERTIFICATE ────────────────────────────────────────────────
 function toggleCertCustomCourse() {
   const v = document.getElementById('cert-course').value;
@@ -426,24 +424,24 @@ function generateCertificate() {
   const boldPhrase = document.getElementById('cert-bold-phrase').value;
   const year = document.getElementById('cert-year').value || '2026';
   const stuLabel = document.getElementById('cert-student-label').value || 'Graduate';
-
+ 
   document.getElementById('c-course').textContent = course.toUpperCase();
   document.getElementById('c-name').textContent = name;
   document.getElementById('c-ach').innerHTML = `<span class="cstar">★</span>${ach} ${year}<span class="cstar">★</span>`;
   document.getElementById('c-seal-yr').textContent = year;
   document.getElementById('c-student-sig').textContent = name;
   document.getElementById('c-student-label').innerHTML = `${stuLabel}<br>${course}`;
-
+ 
   let bodyHTML = bodyRaw;
   if (boldPhrase) bodyHTML = bodyRaw.replace(new RegExp(boldPhrase, 'gi'), m => `<strong>${m}</strong>`);
   document.getElementById('c-body').innerHTML = bodyHTML;
-
+ 
   document.getElementById('cert-out').style.display = 'block';
 }
-
+ 
 // ── FEEDBACK ───────────────────────────────────────────────────
 let fbRights = [], fbNeeds = [], fbActions = [];
-
+ 
 function addRight() {
   const id = Date.now();
   fbRights.push({ id });
@@ -459,12 +457,12 @@ function addAction() {
   fbActions.push({ id });
   renderFbList('actions');
 }
-
+ 
 function renderFbList(type) {
   const arr = type === 'rights' ? fbRights : type === 'needs' ? fbNeeds : fbActions;
   const elId = type === 'rights' ? 'fb-rights-list' : type === 'needs' ? 'fb-needs-list' : 'fb-actions-list';
   const el = document.getElementById(elId);
-
+ 
   if (type === 'actions') {
     el.innerHTML = arr.map((item, i) => `
       <div class="acard">
@@ -483,82 +481,82 @@ function renderFbList(type) {
       </div>`).join('');
   }
 }
-
+ 
 function removeFbItem(type, id) {
   if (type === 'rights') fbRights = fbRights.filter(x => x.id !== id);
   else if (type === 'needs') fbNeeds = fbNeeds.filter(x => x.id !== id);
   else fbActions = fbActions.filter(x => x.id !== id);
   renderFbList(type);
 }
-
+ 
 function generateFeedback() {
   const name = document.getElementById('fb-name').value || 'Student';
   const title = document.getElementById('fb-title').value || 'Assessment';
   const score = document.getElementById('fb-score').value;
   const verdict = document.getElementById('fb-verdict').value;
   const note = document.getElementById('fb-note').value;
-
+ 
   document.getElementById('fb-out-title').textContent = title + ' Feedback';
   document.getElementById('fb-out-meta').textContent =
     `${title} — ${name}${score ? ' | Score: ' + score : ''} | Digital Kessy Ghostwriting Studio`;
   document.getElementById('fb-out-verdict').textContent = verdict;
   document.getElementById('fb-out-note').textContent = note;
-
+ 
   // Rights
   document.getElementById('fb-out-rights').innerHTML = fbRights.map(item => {
     const t = document.getElementById('ft-' + item.id)?.value || '';
     const b = document.getElementById('fb-' + item.id)?.value || '';
     return `<div><div class="fb-pt-title">${t}</div><div class="fb-pt-body">${b}</div></div>`;
   }).join('');
-
+ 
   // Needs
   document.getElementById('fb-out-needs').innerHTML = fbNeeds.map(item => {
     const t = document.getElementById('ft-' + item.id)?.value || '';
     const b = document.getElementById('fb-' + item.id)?.value || '';
     return `<div><div class="fb-pt-title">${t}</div><div class="fb-pt-body">${b}</div></div>`;
   }).join('');
-
+ 
   // Actions
   document.getElementById('fb-out-actions').innerHTML = fbActions.map(item => {
     const a = document.getElementById('fa-' + item.id)?.value || '';
     return `<div class="fb-act">${a}</div>`;
   }).join('');
-
+ 
   document.getElementById('fb-out').style.display = 'block';
 }
-
+ 
 // ── DOCX DOWNLOAD (Feedback only) ─────────────────────────────
 async function downloadFeedbackDocx() {
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, ShadingType } = docx;
-
+ 
   const name    = document.getElementById('fb-name').value || 'Student';
   const title   = document.getElementById('fb-title').value || 'Assessment';
   const score   = document.getElementById('fb-score').value;
   const verdict = document.getElementById('fb-verdict').value;
   const note    = document.getElementById('fb-note').value;
-
+ 
   const purple = '6B21A8';
   const gold   = 'C9A84C';
   const dark   = '1A0030';
   const muted  = 'A89BB5';
   const red    = 'E05C5C';
   const green  = '6EE7A0';
-
+ 
   const divider = new Paragraph({
     border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: purple } },
     spacing: { after: 200 }
   });
-
+ 
   const sectionHeading = (text, color) => new Paragraph({
     children: [new TextRun({ text: text.toUpperCase(), bold: true, color, size: 22, font: 'Cinzel' })],
     spacing: { before: 320, after: 120 }
   });
-
+ 
   const bodyText = (text, color = 'F5F0FF') => new Paragraph({
     children: [new TextRun({ text, color, size: 22, font: 'Palatino Linotype' })],
     spacing: { after: 80 }
   });
-
+ 
   const pointBlock = (titleText, bodyTxt) => [
     new Paragraph({
       children: [new TextRun({ text: titleText, bold: true, color: 'F5F0FF', size: 22, font: 'Palatino Linotype' })],
@@ -571,12 +569,12 @@ async function downloadFeedbackDocx() {
       spacing: { after: 100 }
     })
   ];
-
+ 
   const actionItem = (text) => new Paragraph({
     children: [new TextRun({ text: '• ' + text, color: 'F5F0FF', size: 22, font: 'Palatino Linotype' })],
     spacing: { after: 80 }
   });
-
+ 
   // Collect data
   const rightsData = fbRights.map(item => ({
     title: document.getElementById('ft-' + item.id)?.value || '',
@@ -589,7 +587,7 @@ async function downloadFeedbackDocx() {
   const actionsData = fbActions.map(item =>
     document.getElementById('fa-' + item.id)?.value || ''
   );
-
+ 
   const children = [
     // Header
     new Paragraph({
@@ -605,23 +603,23 @@ async function downloadFeedbackDocx() {
       spacing: { after: 200 }
     }),
     divider,
-
+ 
     // Verdict
     sectionHeading('✦ Overall Verdict', '9333EA'),
     bodyText(verdict),
-
+ 
     // Rights
     sectionHeading('✦ What You Did Right ✓', green),
     ...rightsData.flatMap(p => pointBlock(p.title, p.body)),
-
+ 
     // Needs
     sectionHeading('✦ What Needs Work ✗', red),
     ...needsData.flatMap(p => pointBlock(p.title, p.body)),
-
+ 
     // Actions
     sectionHeading('✦ Action Items for the Rewrite', gold),
     ...actionsData.map(a => actionItem(a)),
-
+ 
     // Note
     sectionHeading('✦ A Note from Your Coach', '9333EA'),
     new Paragraph({
@@ -634,7 +632,7 @@ async function downloadFeedbackDocx() {
       },
       spacing: { before: 100, after: 100 }
     }),
-
+ 
     // Footer
     new Paragraph({ spacing: { before: 400 } }),
     new Paragraph({
@@ -646,7 +644,7 @@ async function downloadFeedbackDocx() {
       spacing: { before: 160 }
     })
   ];
-
+ 
   const doc = new Document({
     background: { color: '0D0016' },
     sections: [{
@@ -658,17 +656,17 @@ async function downloadFeedbackDocx() {
       children
     }]
   });
-
+ 
   const filename = `digitalkessy-feedback-${name.replace(/\s+/g, '-').toLowerCase()}.docx`;
   const blob = await Packer.toBlob(doc);
-
+ 
   // Convert to base64 for mobile compatibility
   const reader = new FileReader();
   reader.onload = function() {
     const base64 = reader.result;
     const dlMsg = document.getElementById('docx-dl-msg');
     const dlBtn = document.getElementById('docx-dl-btn');
-
+ 
     // Try standard download first
     const a = document.createElement('a');
     a.href = base64;
@@ -676,7 +674,7 @@ async function downloadFeedbackDocx() {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-
+ 
     // Show open-in-new-tab fallback for mobile
     dlMsg.innerHTML = `
       <a href="${base64}" download="${filename}" 
@@ -688,7 +686,7 @@ async function downloadFeedbackDocx() {
   };
   reader.readAsDataURL(blob);
 }
-
+ 
 // ── PNG UTILS (Scoreboard + Certificate) ──────────────────────
 function downloadImg(id, filename) {
   const el = document.getElementById(id);
@@ -709,7 +707,7 @@ function copyImg(id) {
     });
   });
 }
-
+ 
 // ── INIT ──────────────────────────────────────────────────────
 addStudent();
 addStudent();
